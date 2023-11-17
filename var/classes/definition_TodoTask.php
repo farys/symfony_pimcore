@@ -12,12 +12,12 @@
 
 return \Pimcore\Model\DataObject\ClassDefinition::__set_state(array(
    'dao' => NULL,
-   'id' => '10',
+   'id' => '4',
    'name' => 'TodoTask',
    'title' => '',
    'description' => '',
    'creationDate' => NULL,
-   'modificationDate' => 1700230264,
+   'modificationDate' => 1700255266,
    'userOwner' => 2,
    'userModification' => 2,
    'parentClass' => '',
@@ -219,6 +219,36 @@ return \Pimcore\Model\DataObject\ClassDefinition::__set_state(array(
    'enableGridLocking' => false,
    'deletedDataComponents' => 
   array (
+    0 => 
+    \Pimcore\Model\DataObject\ClassDefinition\Data\Numeric::__set_state(array(
+       'name' => 'userrId',
+       'title' => 'User Id',
+       'tooltip' => '',
+       'mandatory' => true,
+       'noteditable' => false,
+       'index' => true,
+       'locked' => false,
+       'style' => '',
+       'permissions' => NULL,
+       'fieldtype' => '',
+       'relationType' => false,
+       'invisible' => false,
+       'visibleGridView' => false,
+       'visibleSearch' => false,
+       'blockedVarsForExport' => 
+      array (
+      ),
+       'defaultValue' => NULL,
+       'integer' => true,
+       'unsigned' => true,
+       'minValue' => NULL,
+       'maxValue' => NULL,
+       'unique' => false,
+       'decimalSize' => NULL,
+       'decimalPrecision' => NULL,
+       'width' => '',
+       'defaultValueGenerator' => '',
+    )),
   ),
    'blockedVarsForExport' => 
   array (

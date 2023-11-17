@@ -1,0 +1,192 @@
+pimcore_data_hub:
+    configurations:
+        AirportRunways:
+            general:
+                type: dataImporterDataObject
+                name: AirportRunways
+                description: ''
+                group: ''
+                active: false
+                path: null
+                modificationDate: 1700254805
+                createDate: 1700253074
+            loaderConfig:
+                type: upload
+                settings:
+                    uploadFilePath: AirportRunways/upload.import
+            interpreterConfig:
+                type: csv
+                settings:
+                    skipFirstRow: true
+                    delimiter: ','
+                    enclosure: '"'
+                    escape: \
+            resolverConfig:
+                elementType: dataObject
+                dataObjectClassId: '2'
+                loadingStrategy:
+                    type: attribute
+                    settings:
+                        dataSourceIndex: '0'
+                        attributeName: importId
+                        language: ''
+                        includeUnpublished: true
+                createLocationStrategy:
+                    type: staticPath
+                    settings:
+                        path: '/AirportRunways Data'
+                locationUpdateStrategy:
+                    type: noChange
+                publishingStrategy:
+                    type: noChangeUnpublishNew
+            processingConfig:
+                executionType: parallel
+                idDataIndex: '0'
+                cleanup:
+                    strategy: delete
+            mappingConfig:
+                -
+                    label: airport_ref
+                    dataSourceIndex:
+                        - '1'
+                    settings:
+                        loadStrategy: attribute
+                        attributeDataObjectClassId: '1'
+                        attributeName: importId
+                        attributeLanguage: ''
+                        loadUnpublished: 'on'
+                    transformationResultType: dataObject
+                    dataTarget:
+                        type: direct
+                        settings:
+                            fieldName: airport
+                            language: ''
+                            writeIfTargetIsNotEmpty: true
+                            writeIfSourceIsEmpty: true
+                    transformationPipeline:
+                        -
+                            settings:
+                                loadStrategy: attribute
+                                attributeDataObjectClassId: '1'
+                                attributeName: importId
+                                attributeLanguage: ''
+                                loadUnpublished: 'on'
+                            type: loadDataObject
+                -
+                    label: id
+                    dataSourceIndex:
+                        - '0'
+                    transformationResultType: numeric
+                    dataTarget:
+                        type: direct
+                        settings:
+                            fieldName: importId
+                            language: ''
+                            writeIfTargetIsNotEmpty: true
+                            writeIfSourceIsEmpty: true
+                    transformationPipeline:
+                        -
+                            type: numeric
+                -
+                    label: length
+                    dataSourceIndex:
+                        - '3'
+                    settings:
+                        unitSourceSelect: static
+                        staticUnitSelect: lengthSegmentFoot
+                        unitNullIfNoValueCheckbox: 'on'
+                    transformationResultType: quantityValue
+                    dataTarget:
+                        type: direct
+                        settings:
+                            fieldName: length
+                            language: ''
+                            writeIfTargetIsNotEmpty: true
+                            writeIfSourceIsEmpty: true
+                    transformationPipeline:
+                        -
+                            settings:
+                                unitSourceSelect: static
+                                staticUnitSelect: lengthSegmentFoot
+                                unitNullIfNoValueCheckbox: 'on'
+                            type: quantityValue
+                -
+                    label: width
+                    dataSourceIndex:
+                        - '4'
+                    settings:
+                        unitSourceSelect: static
+                        staticUnitSelect: lengthSegmentFoot
+                        unitNullIfNoValueCheckbox: 'on'
+                    transformationResultType: quantityValue
+                    dataTarget:
+                        type: direct
+                        settings:
+                            fieldName: width
+                            language: ''
+                            writeIfTargetIsNotEmpty: true
+                            writeIfSourceIsEmpty: true
+                    transformationPipeline:
+                        -
+                            settings:
+                                unitSourceSelect: static
+                                staticUnitSelect: lengthSegmentFoot
+                                unitNullIfNoValueCheckbox: 'on'
+                            type: quantityValue
+                -
+                    label: surfaceType
+                    dataSourceIndex:
+                        - '5'
+                    settings:
+                        similarityThreshold: '70'
+                    transformationResultType: array
+                    dataTarget:
+                        type: direct
+                        settings:
+                            fieldName: surfaceType
+                            language: ''
+                            writeIfTargetIsNotEmpty: true
+                            writeIfSourceIsEmpty: true
+                    transformationPipeline:
+                        -
+                            settings:
+                                similarityThreshold: '70'
+                            type: decodeAirportSurfaceNotation
+                -
+                    label: lighted
+                    dataSourceIndex:
+                        - '6'
+                    transformationResultType: boolean
+                    dataTarget:
+                        type: direct
+                        settings:
+                            fieldName: lighted
+                            language: ''
+                            writeIfTargetIsNotEmpty: true
+                            writeIfSourceIsEmpty: true
+                    transformationPipeline:
+                        -
+                            type: boolean
+                -
+                    label: closed
+                    dataSourceIndex:
+                        - '7'
+                    transformationResultType: boolean
+                    dataTarget:
+                        type: direct
+                        settings:
+                            fieldName: closed
+                            language: ''
+                            writeIfTargetIsNotEmpty: true
+                            writeIfSourceIsEmpty: true
+                    transformationPipeline:
+                        -
+                            type: boolean
+            executionConfig:
+                scheduleType: job
+                cronDefinition: ''
+                scheduledAt: ''
+            permissions:
+                user: {  }
+                role: {  }
+            workspaces: {  }

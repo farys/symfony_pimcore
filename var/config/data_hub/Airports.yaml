@@ -1,0 +1,135 @@
+pimcore_data_hub:
+    configurations:
+        Airports:
+            general:
+                type: dataImporterDataObject
+                name: Airports
+                description: ''
+                group: ''
+                active: false
+                path: null
+                modificationDate: 1700253852
+                createDate: 1700252007
+            loaderConfig:
+                type: upload
+                settings:
+                    uploadFilePath: Airports/upload.import
+            interpreterConfig:
+                type: csv
+                settings:
+                    skipFirstRow: true
+                    delimiter: ','
+                    enclosure: '"'
+                    escape: \
+            resolverConfig:
+                elementType: dataObject
+                dataObjectClassId: '1'
+                loadingStrategy:
+                    type: attribute
+                    settings:
+                        dataSourceIndex: '0'
+                        attributeName: importId
+                        language: ''
+                        includeUnpublished: true
+                createLocationStrategy:
+                    type: staticPath
+                    settings:
+                        path: '/Airports Data'
+                locationUpdateStrategy:
+                    type: noChange
+                publishingStrategy:
+                    type: noChangeUnpublishNew
+            processingConfig:
+                executionType: parallel
+                idDataIndex: '0'
+                cleanup:
+                    strategy: delete
+            mappingConfig:
+                -
+                    label: id
+                    dataSourceIndex:
+                        - '0'
+                    transformationResultType: numeric
+                    dataTarget:
+                        type: direct
+                        settings:
+                            fieldName: importId
+                            language: ''
+                            writeIfTargetIsNotEmpty: true
+                            writeIfSourceIsEmpty: true
+                    transformationPipeline:
+                        -
+                            type: numeric
+                -
+                    label: ident
+                    dataSourceIndex:
+                        - '1'
+                    transformationResultType: default
+                    dataTarget:
+                        type: direct
+                        settings:
+                            fieldName: ident
+                            language: ''
+                            writeIfTargetIsNotEmpty: true
+                            writeIfSourceIsEmpty: true
+                    transformationPipeline: {  }
+                -
+                    label: name
+                    dataSourceIndex:
+                        - '3'
+                    transformationResultType: default
+                    dataTarget:
+                        type: direct
+                        settings:
+                            fieldName: name
+                            language: ''
+                            writeIfTargetIsNotEmpty: true
+                            writeIfSourceIsEmpty: true
+                    transformationPipeline: {  }
+                -
+                    label: geo
+                    dataSourceIndex:
+                        - '4'
+                        - '5'
+                    transformationResultType: geoPoint
+                    dataTarget:
+                        type: direct
+                        settings:
+                            fieldName: geoLocation
+                            language: ''
+                            writeIfTargetIsNotEmpty: true
+                            writeIfSourceIsEmpty: true
+                    transformationPipeline:
+                        -
+                            type: asGeopoint
+                -
+                    label: elevation_ft
+                    dataSourceIndex:
+                        - '6'
+                    settings:
+                        unitSourceSelect: static
+                        staticUnitSelect: lengthSegmentFoot
+                        unitNullIfNoValueCheckbox: 'on'
+                    transformationResultType: quantityValue
+                    dataTarget:
+                        type: direct
+                        settings:
+                            fieldName: elevation
+                            language: ''
+                            writeIfTargetIsNotEmpty: true
+                            writeIfSourceIsEmpty: true
+                    transformationPipeline:
+                        -
+                            settings:
+                                unitSourceSelect: static
+                                staticUnitSelect: lengthSegmentFoot
+                                unitNullIfNoValueCheckbox: 'on'
+                            type: quantityValue
+            executionConfig:
+                scheduleType: job
+                cronDefinition: ''
+                scheduledAt: ''
+            permissions:
+                user: {  }
+                role: {  }
+            workspaces: {  }

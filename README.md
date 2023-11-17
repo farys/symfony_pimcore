@@ -1,56 +1,69 @@
-# Pimcore Project Skeleton 
-
-This skeleton should be used by experienced Pimcore developers for starting a new project from the ground up. 
-If you are new to Pimcore, it's better to start with our demo package, listed below 😉
-
-## Getting started
-```bash
-COMPOSER_MEMORY_LIMIT=-1 composer create-project pimcore/skeleton my-project
-cd ./my-project
-./vendor/bin/pimcore-install
-```
-
-- Point your virtual host to `my-project/public` 
-- Open https://your-host/admin in your browser
-- Done! 😎
-
-## Docker
-
-You can also use Docker to set up a new Pimcore Installation.
-You don't need to have a PHP environment with composer installed.
-
-### Prerequisites
-
-* Your user must be allowed to run docker commands (directly or via sudo).
-* You must have docker compose installed.
-* Your user must be allowed to change file permissions (directly or via sudo).
+# Pimcore airporter
 
 ### Follow these steps
-1. Initialize the skeleton project using the `pimcore/pimcore` image
-``docker run -u `id -u`:`id -g` --rm -v `pwd`:/var/www/html pimcore/pimcore:php8.2-latest composer create-project pimcore/skeleton my-project``
 
-2. Go to your new project
-`cd my-project/`
+1.Download the contents of this repository and run the following command in the location where the airporter directory is to be created, containing the contents of this project:
+```bash
+git clone https://github.com/farys/airporter airporter
+```
+2.Navigate to the airporter project directory
+```bash
+cd airporter
+```
 
-3. Part of the new project is a docker compose file
-    * Run `sed -i "s|#user: '1000:1000'|user: '$(id -u):$(id -g)'|g" docker-compose.yaml` to set the correct user id and group id.
-    * Start the needed services with `docker compose up -d`
+3. Start the database (as a separate service)
+```bash
+docker-compose up -d db
+```
 
-4. Install pimcore and initialize the DB
-    `docker compose exec php vendor/bin/pimcore-install`
-    * When asked for admin user and password: Choose freely
-    * This can take a while, up to 20 minutes
-    * If you select to install the SimpleBackendSearchBundle please make sure to add the `pimcore_search_backend_message` to your `.docker/supervisord.conf` file.
+4.Load the content of the database backup
+```bash
+cat init.sql | docker-compose exec -T db mysql -uroot -pRot192. pimcore
+```
 
-5. Run codeception tests:
-   * `docker compose run --user=root --rm test-php chown -R $(id -u):$(id -g) var/ public/var/`
-   * `docker compose run --rm test-php vendor/bin/pimcore-install -n`
-   * `docker compose run --rm test-php vendor/bin/codecept run -vv`
+5. Run the entire project with additional services
+```bash
+docker-compose up -d
+```
+6. Install dependencies
+```bash
+docker-compose exec php composer install
+#docker-compose exec php bin/console pimcore:bundle:install PimcoreDataHubBundle
+#docker-compose exec php bin/console pimcore:bundle:install PimcoreDataImporterBundle
+```
 
-6. :heavy_check_mark: DONE - You can now visit your pimcore instance:
-    * The frontend: <http://localhost>
-    * The admin interface, using the credentials you have chosen above:
-      <http://localhost/admin>
+7. Clear cache
+```bash
+docker-compose exec php bin/console cache:clear
+docker-compose exec php bin/console pimcore:cache:clear
+```
 
-## Other demo/skeleton packages
-- [Pimcore Basic Demo](https://github.com/pimcore/demo)
+8. Log in to the administration panel
+`login: pimcore`
+`haslo: pimcore`
+
+### Additional Information
+1. To initiate the import of the task list, execute the command or set it up as a cron job
+```bash
+docker-compose exec php bin/console app:import-todos-list
+```
+2. To run pimcore's parallel tasks
+```bash
+docker-compose exec php bin/console datahub:data-importer:process-queue-parallel --processes=5
+```
+3. To run pimcore's sequential tasks
+```bash
+docker-compose exec php bin/console datahub:data-importer:process-queue-sequential
+```
+4. To uninstall services installed for the project, execute
+```bash
+docker-compose rm
+```
+
+5. Example CSV files in the /uploads directory.
+
+### Prerequisits
+
+* Your user must be allowed to run docker commands (directly or via sudo).
+* You must have docker-compose installed.
+* Your user must be allowed to change file permissions (directly or via sudo).

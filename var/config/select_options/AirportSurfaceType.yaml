@@ -1,0 +1,46 @@
+pimcore:
+    objects:
+        select_options:
+            definitions:
+                AirportSurfaceType:
+                    id: AirportSurfaceType
+                    group: ''
+                    useTraits: ''
+                    implementsInterfaces: ''
+                    selectOptions:
+                        -
+                            value: DIRTDIRT
+                            label: DIRT
+                            name: DIRT
+                        -
+                            value: TURF
+                            label: TURF
+                            name: TURF
+                        -
+                            value: WATER
+                            label: WATER
+                            name: WATER
+                        -
+                            value: GRASS
+                            label: GRASS
+                            name: GRASS
+                        -
+                            value: ASPH
+                            label: ASPHALT
+                            name: ASPHALT
+                        -
+                            value: GRVL
+                            label: GRAVEL
+                            name: GRAVEL
+                        -
+                            value: CONC
+                            label: CONCRETE
+                            name: CONCRETE
+                        -
+                            value: SAND
+                            label: SAND
+                            name: SAND
+                        -
+                            value: UNKNOWN
+                            label: UNKNOWN
+                            name: UNKNOWN
